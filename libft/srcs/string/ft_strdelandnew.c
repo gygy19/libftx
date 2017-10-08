@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libx_new_line.c                                    :+:      :+:    :+:   */
+/*   ft_strdelandnew.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/21 01:12:40 by jguyet            #+#    #+#             */
-/*   Updated: 2016/08/21 01:17:06 by jguyet           ###   ########.fr       */
+/*   Created: 2016/07/17 03:03:57 by jguyet            #+#    #+#             */
+/*   Updated: 2016/07/17 03:06:16 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftx.h"
+#include "libft.h"
 
-#include <stdlib.h>
-
-t_libx_line			*libx_new_line(t_libx_img *img, t_vector3f *v1,
-	t_vector3f *v2, int color)
+char		*ft_strdelandnew(char **del, int size)
 {
-	t_libx_line	*line;
-
-	if ((line = (t_libx_line*)malloc(sizeof(t_libx_line))) == NULL)
-		return (NULL);
-	line->img = img;
-	line->x1 = v1->x;
-	line->y1 = v1->y;
-	line->x2 = v2->x;
-	line->y2 = v2->y;
-	line->color = color;
-	return (line);
+	if (del)
+		ft_strdel(del);
+	*del = ft_strnew(size);
+	return (*del);
 }

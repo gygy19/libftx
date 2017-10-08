@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libx_new_line.c                                    :+:      :+:    :+:   */
+/*   get_float.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/21 01:12:40 by jguyet            #+#    #+#             */
-/*   Updated: 2016/08/21 01:17:06 by jguyet           ###   ########.fr       */
+/*   Created: 2016/07/15 02:07:06 by jguyet            #+#    #+#             */
+/*   Updated: 2016/07/15 02:10:08 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftx.h"
+#define PRINTF_PROG
 
-#include <stdlib.h>
+#include "printf.h"
 
-t_libx_line			*libx_new_line(t_libx_img *img, t_vector3f *v1,
-	t_vector3f *v2, int color)
+double				get_float(t_string *t)
 {
-	t_libx_line	*line;
-
-	if ((line = (t_libx_line*)malloc(sizeof(t_libx_line))) == NULL)
-		return (NULL);
-	line->img = img;
-	line->x1 = v1->x;
-	line->y1 = v1->y;
-	line->x2 = v2->x;
-	line->y2 = v2->y;
-	line->color = color;
-	return (line);
+	return ((double)va_arg(t->list, double));
 }

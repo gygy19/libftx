@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libx_new_line.c                                    :+:      :+:    :+:   */
+/*   purcente.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/21 01:12:40 by jguyet            #+#    #+#             */
-/*   Updated: 2016/08/21 01:17:06 by jguyet           ###   ########.fr       */
+/*   Created: 2016/06/07 05:20:36 by jguyet            #+#    #+#             */
+/*   Updated: 2016/06/07 05:20:38 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftx.h"
+#define PRINTF_PROG
 
-#include <stdlib.h>
+#include "printf.h"
 
-t_libx_line			*libx_new_line(t_libx_img *img, t_vector3f *v1,
-	t_vector3f *v2, int color)
+static void		conv_process(t_string *string, char *tmp)
 {
-	t_libx_line	*line;
+	string->is_big = 5;
+	string->tmp_alloc = 0;
+	if (!ft_strcmp(string->sub_num, "0.0") || !ft_strcmp(string->sub_num, ".0"))
+	{
+		ft_bzero(string->sub_num, BUFFER_SUBNUM);
+	}
+	add_conv_string(string, tmp);
+}
 
-	if ((line = (t_libx_line*)malloc(sizeof(t_libx_line))) == NULL)
-		return (NULL);
-	line->img = img;
-	line->x1 = v1->x;
-	line->y1 = v1->y;
-	line->x2 = v2->x;
-	line->y2 = v2->y;
-	line->color = color;
-	return (line);
+int				conv_purcent(t_string *string, int i)
+{
+	conv_process(string, ft_strdup("%"));
+	return (i + 1);
 }

@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libx_new_line.c                                    :+:      :+:    :+:   */
+/*   transform_perspective.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/21 01:12:40 by jguyet            #+#    #+#             */
-/*   Updated: 2016/08/21 01:17:06 by jguyet           ###   ########.fr       */
+/*   Created: 2017/10/08 21:17:36 by jguyet            #+#    #+#             */
+/*   Updated: 2017/10/08 21:17:38 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftx.h"
 
-#include <stdlib.h>
+#include <math.h>
 
-t_libx_line			*libx_new_line(t_libx_img *img, t_vector3f *v1,
-	t_vector3f *v2, int color)
+t_matrix4f	*init_perspective(float fov, float aspect_ratio,\
+			float near, float far)
 {
-	t_libx_line	*line;
+	float		z_range;
+	t_matrix4f	*m;
 
-	if ((line = (t_libx_line*)malloc(sizeof(t_libx_line))) == NULL)
-		return (NULL);
-	line->img = img;
-	line->x1 = v1->x;
-	line->y1 = v1->y;
-	line->x2 = v2->x;
-	line->y2 = v2->y;
-	line->color = color;
-	return (line);
+	z_range = near - far;
+	fov = (float)tan(ft_radians(fov / 2.0f));
+	m = new_matrix4f();
+	m->matrix[0][0] = 1.0f / (fov * aspect_ratio);
+	m->matrix[1][1] = 1.0f / fov;
+	m->matrix[2][2] = (-near - far) / z_range;
+	m->matrix[2][3] = 2 * far * near / z_range;
+	m->matrix[3][2] = 1;
+	return (m);
 }

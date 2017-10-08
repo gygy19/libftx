@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libx_new_line.c                                    :+:      :+:    :+:   */
+/*   add_char.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/21 01:12:40 by jguyet            #+#    #+#             */
-/*   Updated: 2016/08/21 01:17:06 by jguyet           ###   ########.fr       */
+/*   Created: 2016/05/22 13:04:56 by jguyet            #+#    #+#             */
+/*   Updated: 2016/05/22 13:04:58 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftx.h"
+#define PRINTF_PROG
 
-#include <stdlib.h>
+#include "printf.h"
 
-t_libx_line			*libx_new_line(t_libx_img *img, t_vector3f *v1,
-	t_vector3f *v2, int color)
+void		add_char(t_string *string, char c)
 {
-	t_libx_line	*line;
+	char *tmp;
 
-	if ((line = (t_libx_line*)malloc(sizeof(t_libx_line))) == NULL)
-		return (NULL);
-	line->img = img;
-	line->x1 = v1->x;
-	line->y1 = v1->y;
-	line->x2 = v2->x;
-	line->y2 = v2->y;
-	line->color = color;
-	return (line);
+	if (string->res != 0 && !(string->res % BUFFER))
+	{
+		tmp = ft_strnew(string->res + BUFFER);
+		ft_memcpy(tmp, string->new, string->res);
+		ft_strdel(&string->new);
+		string->new = tmp;
+	}
+	string->new[string->res++] = c;
 }

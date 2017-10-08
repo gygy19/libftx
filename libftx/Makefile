@@ -32,7 +32,18 @@ SRCBASE		=	\
 				libx_draw_line_to_img.c					\
 				libx_new_img.c							\
 				libx_put_pixel_to_img.c					\
-				libx_new_line.c
+				libx_new_line.c							\
+				transform/transform.c					\
+				transform/transform_builder.c			\
+				transform/transform_perspective.c		\
+				transform/transform_rotation.c			\
+				transform/transform_scale.c				\
+				transform/transform_translation.c		\
+				mathf/ft_radians.c						\
+				matrix4f/matrix4f.c						\
+				vector2f/vector2f.c						\
+				vector3f/vector3f.c						\
+				vector4f/vector4f.c
 				
 
 SRCS		=	$(addprefix $(SRCDIR), $(SRCBASE))
