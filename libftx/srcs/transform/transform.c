@@ -25,19 +25,22 @@ t_transform	*new_transform(void)
 	t->near = 0.1f;
 	t->far = 1000.0f;
 	t->projection = NULL;
-	t->translation = NULL;
-	t->rotation = NULL;
-	t->scale = NULL;
-	t->vpos = NULL;
-	t->vrot = NULL;
-	t->vscale = NULL;
+	t->matrix = NULL;
+	t->model = new_model();
+	t->view = new_view();
 	return (t);
 }
 
 void		destruct_transform(t_transform *t)
 {
+	if (t->projection != NULL)
+		destruct_matrix4f(t->projection);
 	if (t->matrix != NULL)
 		destruct_matrix4f(t->matrix);
+	if (t->model != NULL)
+		destruct_model(t->model);
+	if (t->view != NULL)
+		destruct_view(t->view);
 	free(t);
 }
 
@@ -49,5 +52,5 @@ void		set_transform_window_size(t_transform *t, float width,\
 
 t_vector3f	*apply_transform(t_transform *t, t_vector3f *v)
 {
-	return (apply_matrix4f_to_vertex(t->matrix, v));
+	return (apply_matrix4f_to_vertex4f(t->matrix, v));
 }

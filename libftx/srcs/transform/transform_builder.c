@@ -12,6 +12,7 @@
 
 #include "libftx.h"
 
+/*
 static void		mult_translation(t_transform *t)
 {
 	t_matrix4f	*tmp;
@@ -22,17 +23,18 @@ static void		mult_translation(t_transform *t)
 		destruct_matrix4f(t->matrix);
 		t->matrix = tmp;
 	}
-}
+}*/
 
+/*
 static void		mult_rotation(t_transform *t)
 {
 	t_matrix4f	*tmp;
 
 	if (t->rotation != NULL)
 	{
-		tmp = matrix4f_mul(t->matrix, t->rotation);
-		destruct_matrix4f(t->matrix);
-		t->matrix = tmp;
+		tmp = matrix4f_mul(t->model, t->rotation);
+		destruct_matrix4f(t->model);
+		t->model = tmp;
 	}
 }
 
@@ -42,32 +44,75 @@ static void		mult_scale(t_transform *t)
 
 	if (t->scale != NULL)
 	{
-		tmp = matrix4f_mul(t->matrix, t->scale);
-		destruct_matrix4f(t->matrix);
-		t->matrix = tmp;
+		tmp = matrix4f_mul(t->model, t->scale);
+		destruct_matrix4f(t->model);
+		t->model = tmp;
+	
 	}
+}
+*/
+
+void			build_model(t_model *model)
+{
+	model->matrix = new_matrix4f();
+	model->matrix = transform_rotatef(NULL, model->vrot->x, new_vector3f(1,0,0));
+	model->matrix = transform_rotatef(model->matrix, model->vrot->y, new_vector3f(0,1,0));
+	model->matrix = transform_rotatef(model->matrix, model->vrot->z, new_vector3f(0,0,1));
+	model->matrix = transform_translation(model->matrix, new_vector3f(model->vpos->x, model->vpos->y, model->vpos->z));
+	//t_matrix4f	*tmp;
+
+	//odel->translation = init_translation(model->vpos->x, model->vpos->y, model->vpos->z);
+	//model->rotation = init_rotation(model->vrot->x, model->vrot->y, model->vrot->z);
+	//model->scale = init_scale(model->vscale->x, model->vscale->y, model->vscale->z);
+
+	// model->translation * model->rotation * model->scale
+	//model->matrix = copy_matrix4f(model->translation);
+	
+	/*tmp = matrix4f_mul(model->matrix, model->rotation);
+	destruct_matrix4f(model->matrix);
+	model->matrix = tmp;
+
+	tmp = matrix4f_mul(model->matrix, model->scale);
+	destruct_matrix4f(model->matrix);
+	model->matrix = tmp;*/
+}
+
+void			build_view(t_view *view)
+{
+	view->matrix = new_matrix4f();
+	view->matrix = transform_rotatef(NULL, view->vrot->x, new_vector3f(1,0,0));
+	view->matrix = transform_rotatef(view->matrix, view->vrot->y, new_vector3f(0,1,0));
+	view->matrix = transform_rotatef(view->matrix, view->vrot->z, new_vector3f(0,0,1));
+	view->matrix = transform_translation(view->matrix, new_vector3f(-view->vpos->x, -view->vpos->y, -view->vpos->z));
+	//view->matrix = transform_scale_fixed(view->matrix, new_vector3f(1,1,1), new_vector3f(0, 0, 0));
 }
 
 t_transform		*build_transform(t_transform *t)
 {
-	t->projection = init_perspective(t->fov, t->aspect_ratio, t->near, t->far);
-	if (t->vpos != NULL)
-		t->translation = init_translation(t->vpos->x, t->vpos->y, t->vpos->z);
-	if (t->vrot != NULL)
-		t->rotation = init_rotation(t->vrot->x, t->vrot->y, t->vrot->z);
-	if (t->vscale != NULL)
-		t->scale = init_scale(t->vscale->x, t->vscale->y, t->vscale->z);
+	//t_matrix4f	*tmp;
+
+	t->projection = init_perspective(70.0f, t->aspect_ratio, 0.1f, 100.0f);
+
+	//build_model(t->model);
+	//build_view(t->view);
+
+	t->mv = transform_look_at(new_vector3f(t->view->eye->x, t->view->eye->y, t->view->eye->z), new_vector3f(t->view->center->x, t->view->center->y, t->view->center->z), new_vector3f(t->view->up->x, t->view->up->y, t->view->up->z));//matrix4f_mul(t->model->matrix, t->view->matrix);
+	//t->mv = transform_rotatef(t->mv, t->view->vrot->y, new_vector3f(0,1,0));
+	//t->mv = transform_rotatef(t->mv, t->view->vrot->x, new_vector3f(1,0,0));
+	//t->mv = transform_translation(t->mv, new_vector3f(500,900,0));
+
 	t->matrix = copy_matrix4f(t->projection);
-	mult_rotation(t);
-	mult_scale(t);
-	mult_translation(t);
-	if (t->projection != NULL)
-		destruct_matrix4f(t->projection);
-	if (t->translation != NULL)
-		destruct_matrix4f(t->translation);
-	if (t->scale != NULL)
-		destruct_matrix4f(t->scale);
-	if (t->rotation != NULL)
-		destruct_matrix4f(t->rotation);
+	//t->matrix = matrix4f_mul(t->projection, t->mv);
+	
+	//destruct_matrix4f(t->projection);
+
+	/*build_model(t->model);
+	build_view(t->view);
+
+	t->matrix = copy_matrix4f(t->view->matrix);//matrix4f_mul(t->model->matrix, t->view->matrix);//A TEST DANS L"AUTRE SENS
+	
+	tmp = matrix4f_mul(t->projection, t->matrix);
+	destruct_matrix4f(t->matrix);
+	t->matrix = tmp;*/
 	return (t);
 }

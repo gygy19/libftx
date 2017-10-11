@@ -99,7 +99,7 @@ t_matrix4f		*matrix4f_mul(t_matrix4f *m, t_matrix4f *m2)
 	}
 	return (res);
 }
-/*
+
 t_matrix4f		*init_screen_space(float width, float height)
 {
 	t_matrix4f	*m;
@@ -124,32 +124,41 @@ t_matrix4f		*init_screen_space(float width, float height)
 	return (m);
 }
 
-t_matrix4f		*build_transform(float width, float height, t_vector3f *campos, t_vector3f *camrot, t_vector3f *scale)
-{
-	t_matrix4f	*projection;
-	t_matrix4f	*translation;
-	t_matrix4f	*rotation;
-	t_matrix4f	*mscale;
-	t_matrix4f	*transform;
-
-	projection = init_perspective(70.0f, width / height, 0.1f, 1000.0f);
-	translation = init_translation(campos->x, campos->y, campos->z);
-	rotation = init_rotation(camrot->x, camrot->y, camrot->z);
-	mscale = init_scale(scale->x, scale->y, scale->z);
-	transform = matrix4f_mul(matrix4f_mul(projection, matrix4f_mul(translation, rotation)), mscale);
-	return (transform);
-}*/
-
 t_vector3f  *apply_matrix4f_to_vertex(t_matrix4f *m, t_vector3f *v)
 {
-    t_vector3f *dst;
+	t_vector3f	*dst;
 
     dst = new_vector3f(0,0,0);
 	dst->x = v->x*m->matrix[0][0] + v->y*m->matrix[0][1]\
-		+ v->z*m->matrix[0][2] + m->matrix[0][3];
+	+ v->z*m->matrix[0][2] + m->matrix[0][3];
+
 	dst->y = v->x*m->matrix[1][0] + v->y*m->matrix[1][1]\
 		+ v->z*m->matrix[1][2] + m->matrix[1][3];
+
 	dst->z = v->x*m->matrix[2][0] + v->y*m->matrix[2][1]\
 		+ v->z*m->matrix[2][2] + m->matrix[2][3];
+    return (dst);
+}
+
+t_vector3f  *apply_matrix4f_to_vertex4f(t_matrix4f *m, t_vector3f *src)
+{
+	t_vector3f	*dst;
+	t_vector4f	*v;
+
+	dst = new_vector3f(0,0,0);
+	v = new_vector4f(src->x,src->y,src->z,1);
+	dst->x = v->x*m->matrix[0][0] + v->y*m->matrix[0][1]\
+	+ v->z*m->matrix[0][2] + v->w*m->matrix[0][3];
+
+	dst->y = v->x*m->matrix[1][0] + v->y*m->matrix[1][1]\
+		+ v->z*m->matrix[1][2] + v->w*m->matrix[1][3];
+
+	dst->z = v->x*m->matrix[2][0] + v->y*m->matrix[2][1]\
+		+ v->z*m->matrix[2][2] + v->w*m->matrix[2][3];
+
+	/*dst->w = v->x*m->matrix[3][0] + v->y*m->matrix[3][1]\
+		+ v->z*m->matrix[3][2] + v->w*m->matrix[3][3];*/
+	destruct_vector4f(v);
+
     return (dst);
 }

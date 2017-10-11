@@ -23,6 +23,8 @@ typedef struct		s_camera
 	t_vector3f		rot;
 	t_vector3f		pos;
 	t_vector3f		scale;
+	t_vector3f		dir;
+	t_vector3f		a;
 }					t_camera;
 
 typedef struct		s_mouse
@@ -45,7 +47,40 @@ typedef struct		s_fdf
 	char			*filename;
 }					t_fdf;
 
+/*
+** FILE
+*/
+char		*load_file(char *filename);
+
+/*
+** RENDER
+*/
 void        render(t_fdf *fdf);
 void        update_vectors(t_fdf *fdf);
+
+/*
+** MESH
+*/
+void		load_mesh_size(t_fdf *fdf, char *file);
+BOOLEAN		load_mesh_vertex(t_fdf *fdf);
+void		set_mesh_vertex(t_fdf *fdf, char *file);
+void		copy_mesh(t_fdf *fdf);
+
+/*
+** EVENTS
+*/
+int			key_event(int keycode, void **env);
+int			mouse_event(int x, int y, void **env);
+int			scroll_event(int keycode, int x, int y, void **env);
+
+/*
+** LOOP
+*/
+void		fdf_loop(t_fdf *fdf, void **env);
+
+/*
+** FDF
+*/
+t_fdf		*new_fdf(char *filename);
 
 #endif

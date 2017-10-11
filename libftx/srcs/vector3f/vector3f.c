@@ -52,3 +52,22 @@ t_vector3f		*v3f_normalize(t_vector3f *v)
 	v->z /= mag;
 	return (v);
 }
+
+t_vector3f		*v3f_mul(t_vector3f *v1, t_vector3f *v2)
+{
+	t_vector3f *dst;
+
+	dst = new_vector3f(0, 0, 0);
+	dst->x = v1->x * v2->x;
+	dst->y = v1->y * v2->y;
+	dst->z = v1->z * v2->z;
+	return (dst);
+}
+
+t_vector3f		*v3f_cross(t_vector3f *v1, t_vector3f *v2)
+{
+	float nx = v1->y * v2->z - v1->z * v2->y;
+	float ny = v1->z * v2->x - v1->x * v2->z;
+	float nz = v1->x * v2->y - v1->y * v2->x;
+	return (new_vector3f(nx, ny, nz));
+}

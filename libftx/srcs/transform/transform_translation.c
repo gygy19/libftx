@@ -12,6 +12,12 @@
 
 #include "libftx.h"
 
+/* MATRIX TRANSLATION
+** 1 0 0 x
+** 0 1 0 y
+** 0 0 1 z
+** 0 0 0 1
+*/
 t_matrix4f		*init_translation(float x, float y, float z)
 {
 	t_matrix4f	*m;
@@ -35,3 +41,16 @@ t_matrix4f		*init_translation(float x, float y, float z)
 	m->matrix[3][3] = 1;
 	return (m);
 }
+
+t_matrix4f		*transform_translation(t_matrix4f *matrix, t_vector3f *pos)
+{
+	t_matrix4f *translation;
+	t_matrix4f *dst;
+	
+	translation = init_translation(pos->x, pos->y, pos->x);
+	dst = matrix4f_mul(matrix, translation);
+	destruct_matrix4f(translation);
+	destruct_matrix4f(matrix);
+	destruct_vector3f(pos);
+	return (dst);
+} 

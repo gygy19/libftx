@@ -44,7 +44,14 @@ INCDIRMINILIBX	=	$(MINILIBXDIR)/includes/
 
 SRCSPROG1		=	\
 					srcs/main.c																\
-					srcs/render.c
+					srcs/render.c															\
+					srcs/fdf.c																\
+					srcs/file.c																\
+					srcs/mesh.c																\
+					srcs/key_event.c														\
+					srcs/mouse_event.c														\
+					srcs/scroll_event.c														\
+					srcs/fdf_loop.c
 
 DSRCSPROG1		=	$(addprefix $(SRCDIR), $(SRCSPROG1))
 

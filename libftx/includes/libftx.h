@@ -46,10 +46,36 @@ typedef struct	s_matrix4f
 	float		matrix[4][4];
 }				t_matrix4f;
 
+typedef struct	s_model
+{
+	t_matrix4f	*translation;
+	t_vector3f	*vpos;
+	t_matrix4f	*rotation;
+	t_vector3f	*vrot;
+	t_matrix4f	*scale;
+	t_vector3f	*vscale;
+	t_matrix4f	*matrix;
+}				t_model;
+
+typedef struct	s_view
+{
+	t_matrix4f	*translation;
+	t_vector3f	*vpos;
+	t_matrix4f	*rotation;
+	t_vector3f	*vrot;
+	t_matrix4f	*orientation;
+	
+	t_vector3f	*eye;//the position of the viewer
+	t_vector3f	*center;//the point where we the camera aims
+	t_vector3f	*up;//defines the direction of the up for the viewer.
+
+	t_matrix4f	*matrix;
+}				t_view;
+
 typedef struct	s_transform
 {
 /*
-** PROJECTION SECTION
+** PROJECTION
 */
 	t_matrix4f	*projection;
 	float		fov;
@@ -57,24 +83,18 @@ typedef struct	s_transform
 	float		near;
 	float		far;
 /*
-** TRANSLATION SECTION
+** MODEL
 */
-	t_matrix4f	*translation;
-	t_vector3f	*vpos;
+	t_model		*model;
 /*
-** ROTATION SECTION
+** VIEW
 */
-	t_matrix4f	*rotation;
-	t_vector3f	*vrot;
+	t_view		*view;
 /*
-**	SCALE SECTION
-*/
-	t_matrix4f	*scale;
-	t_vector3f	*vscale;
-/*
-** FINAL MATRICIAL
+** FINAL MATRICIAL P*(M*V)
 */
 	t_matrix4f	*matrix;
+	t_matrix4f	*mv;
 }				t_transform;
 
 typedef struct	s_libx_img
@@ -122,6 +142,8 @@ void			destruct_vector3f(t_vector3f *v);
 float			v3f_sqrt(t_vector3f *v);
 float			v3f_magnitude(t_vector3f *v);
 t_vector3f		*v3f_normalize(t_vector3f *v);
+t_vector3f		*v3f_cross(t_vector3f *v1, t_vector3f *v2);
+t_vector3f		*v3f_mul(t_vector3f *v1, t_vector3f *v2);
 
 /*
 ** Vector4f
@@ -141,6 +163,7 @@ t_matrix4f		*matrix4f_identity(void);
 t_matrix4f		*copy_matrix4f(t_matrix4f *origin);
 t_matrix4f		*matrix4f_mul(t_matrix4f *m, t_matrix4f *m2);
 t_vector3f  	*apply_matrix4f_to_vertex(t_matrix4f *m, t_vector3f *v);
+t_vector3f  	*apply_matrix4f_to_vertex4f(t_matrix4f *m, t_vector3f *src);
 
 /*
 **	Mathf
@@ -180,5 +203,24 @@ t_matrix4f		*init_perspective(float fov, float aspect_ratio,\
 t_matrix4f		*init_translation(float x, float y, float z);
 t_matrix4f		*init_rotation(float x, float y, float z);
 t_matrix4f		*init_scale(float x, float y, float z);
+t_matrix4f		*init_view_orientation(t_vector3f *side, t_vector3f *up, t_vector3f *forward);
+
+t_matrix4f		*transform_rotatef(t_matrix4f *matrix, float angle, t_vector3f *type);
+t_matrix4f		*transform_translation(t_matrix4f *matrix, t_vector3f *pos);
+t_matrix4f		*transform_scale(t_matrix4f *matrix, t_vector3f *scale);
+t_matrix4f		*transform_scale_fixed(t_matrix4f *matrix, t_vector3f *scale, t_vector3f *fixed);
+
+t_matrix4f    	*transform_look_at(t_vector3f *eye3d, t_vector3f *center3d, t_vector3f *up3d);
+/*
+** MODEL
+*/
+t_model			*new_model(void);
+void			destruct_model(t_model *t);
+
+/*
+** VIEW
+*/
+t_view			*new_view(void);
+void			destruct_view(t_view *t);
 
 #endif
