@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_loop.c                                         :+:      :+:    :+:   */
+/*   ft_clamp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jguyet <jguyet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/09 14:16:12 by jguyet            #+#    #+#             */
-/*   Updated: 2017/10/09 14:16:13 by jguyet           ###   ########.fr       */
+/*   Created: 2017/10/08 18:52:43 by jguyet            #+#    #+#             */
+/*   Updated: 2017/10/08 18:52:51 by jguyet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "libftx.h"
 
-int		fdf_loop_hook(void **env)
+float	ft_clamp(float value, float max, float min)
 {
-	(void)env;
-	
-	return (0);
-}
-
-void	fdf_loop(t_fdf *fdf, void **env)
-{
-	mlx_hook(fdf->window, 2, 0, key_event, env);
-	mlx_hook(fdf->window, 6, 0, mouse_event, env);
-	//mlx_hook(fdf->window, 4, 0, scroll_event, env);
-	mlx_loop_hook(fdf->mlx, fdf_loop_hook, env);
-	mlx_loop(fdf->mlx);
+    if (value > max)
+        return (max);
+    if (value < min)
+        return (min);
+    return (value);
 }

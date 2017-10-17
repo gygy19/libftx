@@ -48,7 +48,7 @@ t_matrix4f		*transform_translation(t_matrix4f *matrix, t_vector3f *pos)
 	t_matrix4f *dst;
 	
 	translation = init_translation(pos->x, pos->y, pos->x);
-	dst = matrix4f_mul(matrix, translation);
+	dst = matrix4f_mul(translation, matrix);
 	destruct_matrix4f(translation);
 	destruct_matrix4f(matrix);
 	destruct_vector3f(pos);

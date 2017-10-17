@@ -25,10 +25,16 @@ t_matrix4f    	*transform_look_at(t_vector3f *eye3d, t_vector3f *center3d, t_vec
     forward = new_vector3f(center3d->x - eye3d->x, center3d->y - eye3d->y, center3d->z - eye3d->z);
     forward = v3f_normalize(forward);
 
-    side = v3f_mul(forward, up3d);
+    side = new_vector3f(0,0,0);
+    side->x=(forward->y*up3d->z)-(forward->z*up3d->y);
+    side->y=(forward->z*up3d->x)-(forward->x*up3d->z);
+    side->z=(forward->x*up3d->y)-(forward->y*up3d->x);
     side = v3f_normalize(side);
 
-    up = v3f_mul(side, forward);
+    up = new_vector3f(0,0,0);
+    up->x=(side->y*forward->z)-(side->z*forward->y);
+    up->y=(side->z*forward->x)-(side->x*forward->z);
+    up->z=(side->x*forward->y)-(side->y*forward->x);
 
     matrix->matrix[0][0] = side->x;
     matrix->matrix[1][0] = side->y;

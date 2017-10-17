@@ -144,6 +144,7 @@ float			v3f_magnitude(t_vector3f *v);
 t_vector3f		*v3f_normalize(t_vector3f *v);
 t_vector3f		*v3f_cross(t_vector3f *v1, t_vector3f *v2);
 t_vector3f		*v3f_mul(t_vector3f *v1, t_vector3f *v2);
+float			ft_dot(t_vector3f *r1, t_vector3f *r2);
 
 /*
 ** Vector4f
@@ -164,11 +165,13 @@ t_matrix4f		*copy_matrix4f(t_matrix4f *origin);
 t_matrix4f		*matrix4f_mul(t_matrix4f *m, t_matrix4f *m2);
 t_vector3f  	*apply_matrix4f_to_vertex(t_matrix4f *m, t_vector3f *v);
 t_vector3f  	*apply_matrix4f_to_vertex4f(t_matrix4f *m, t_vector3f *src);
+t_matrix4f		*matrix4f_translate(t_vector3f *v);
 
 /*
 **	Mathf
 */
 float			ft_radians(float degrees);
+float			ft_clamp(float value, float max, float min);
 
 /*
 ** Transform
@@ -222,5 +225,18 @@ void			destruct_model(t_model *t);
 */
 t_view			*new_view(void);
 void			destruct_view(t_view *t);
+
+
+t_matrix4f *eulerAngleX(const float anglex);
+t_matrix4f *eulerAngleY(const float angley);
+t_matrix4f *eulerAngleZ(const float anglez);
+t_matrix4f *eulerAngleXY(const float anglex, const float angley);
+t_matrix4f *eulerAngleYX(const float angley, const float anglex);
+t_matrix4f *eulerAngleXZ(const float anglex, const float anglez);
+t_matrix4f *eulerAngleZX(const float anglez, const float anglex);
+
+t_matrix4f		*inverse_4x4(t_matrix4f *m);
+
+t_matrix4f    	*transform_fps_view(t_vector3f *eye, float yaw, float pitch);
 
 #endif

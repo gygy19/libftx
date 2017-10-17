@@ -12,6 +12,8 @@
 
 #include "fdf.h"
 
+#include <math.h>
+
 int mouse_event(int x, int y, void **env)
 {
 	t_fdf	*fdf;
@@ -27,19 +29,28 @@ int mouse_event(int x, int y, void **env)
 		fdf->mouse.lastpos.y = y;
 		return (0);
 	}
-	fdf->mouse.diff.x = fdf->mouse.lastpos.x - x;
-	fdf->mouse.diff.y = fdf->mouse.lastpos.y - y;
+	fdf->mouse.diff.x = x - fdf->mouse.lastpos.x;
+	fdf->mouse.diff.y = y - fdf->mouse.lastpos.y;
+
+	fdf->camera.a.y += fdf->mouse.diff.y * 0.2f;
+	fdf->camera.a.x += fdf->mouse.diff.x * 0.2f;
+
+	//fdf->camera.a.y = ft_clamp( fdf->camera.a.y, -90.0f, 90.0f );
+	//fdf->camera.a.x = fmod(fdf->camera.a.x, 360.0f);
+
 	fdf->mouse.lastpos.x = x;
 	fdf->mouse.lastpos.y = y;
-	if (fdf->mouse.diff.y != 0)
+	/*if (fdf->mouse.diff.y != 0)
 		fdf->camera.rot.y -= fdf->mouse.diff.y * 0.01f;
 	if (fdf->mouse.diff.x != 0)
-		fdf->camera.rot.x += fdf->mouse.diff.x * 0.01f;
+		fdf->camera.rot.x += fdf->mouse.diff.x * 0.01f;*/
 	
 	/*if (fdf->camera.rot.x > 90)
 		fdf->camera.rot.x = 90;
 	if (fdf->camera.rot.x < -90)
 		fdf->camera.rot.x = -90;*/
+
+	//key_event(0, env);
 
 	mlx_clear_window(fdf->mlx, fdf->window);
 	copy_mesh(fdf);

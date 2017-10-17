@@ -34,6 +34,8 @@ SRCBASE		=	\
 				libx_put_pixel_to_img.c					\
 				libx_new_line.c							\
 				transform/transform.c					\
+				transform/euler_angles.c				\
+				transform/transform_fps_view.c			\
 				transform/transform_look_at.c			\
 				transform/transform_builder.c			\
 				transform/transform_perspective.c		\
@@ -44,7 +46,9 @@ SRCBASE		=	\
 				model/model.c							\
 				view/view.c								\
 				mathf/ft_radians.c						\
+				mathf/ft_clamp.c						\
 				matrix4f/matrix4f.c						\
+				matrix4f/inverse_4x4.c					\
 				vector2f/vector2f.c						\
 				vector3f/vector3f.c						\
 				vector4f/vector4f.c

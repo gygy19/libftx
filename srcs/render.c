@@ -65,7 +65,7 @@ void        update_vectors(t_fdf *fdf)
 	int x;
 
 	transform = new_transform();
-	transform->fov = 70.0f;
+	transform->fov = 60.0f;
 	set_transform_window_size(transform, fdf->window_size.x, fdf->window_size.y);
 	transform->near = 0.01f;
 	transform->far = 1000.0f;
@@ -73,9 +73,7 @@ void        update_vectors(t_fdf *fdf)
 	transform->view->vrot = &fdf->camera.rot;
 
 	transform->view->eye = &fdf->camera.pos;
-	transform->view->center = new_vector3f(fdf->camera.a.x + fdf->camera.pos.x, fdf->camera.a.y + fdf->camera.pos.y, fdf->camera.a.z + fdf->camera.pos.z);
-	transform->view->up = v3f_cross(&fdf->camera.dir, &fdf->camera.a);
-	transform->view->up = v3f_normalize(transform->view->up);
+	transform->view->center = &fdf->camera.a;
 
 	transform->model->vpos = new_vector3f(0,0,0);
 	transform->model->vrot = new_vector3f(0,0,0);
@@ -95,13 +93,22 @@ void        update_vectors(t_fdf *fdf)
 				//fdf->grid[y][x] = apply_matrix4f_to_vertex4f(worldcamera, fdf->grid[y][x]);
 				
 
-				fdf->grid[y][x] = apply_matrix4f_to_vertex4f(transform->matrix, fdf->grid[y][x]);//apply_transform(transform, fdf->grid[y][x]);
+				//fdf->grid[y][x] = apply_matrix4f_to_vertex4f(transform->matrix, fdf->grid[y][x]);//apply_transform(transform, fdf->grid[y][x]);
 				
-				
-				fdf->grid[y][x] = apply_matrix4f_to_vertex4f(transform->mv, fdf->grid[y][x]);
+				t_matrix4f *model = matrix4f_translate(fdf->grid[y][x]);
+
+				model = transform_rotatef(model, fdf->camera.rot.y, new_vector3f(0,1,0));
+
+				t_matrix4f *mvp = matrix4f_mul(model, transform->mv);
+
+				fdf->grid[y][x] = apply_matrix4f_to_vertex4f(mvp, fdf->grid[y][x]);
+
+				destruct_matrix4f(mvp);
+				destruct_matrix4f(model);
+				//fdf->grid[y][x] = n;//= apply_matrix4f_to_vertex4f(transform->mv, fdf->grid[y][x]);
 				//fdf->grid[y][x]->x += 200;
 				//fdf->grid[y][x]->y += 100;
-				printf("v->x(%f) v->y(%f) v->z(%f)\n", fdf->grid[y][x]->x, fdf->grid[y][x]->y, fdf->grid[y][x]->z);
+				//printf("v->x(%f) v->y(%f) v->z(%f)\n", fdf->grid[y][x]->x, fdf->grid[y][x]->y, fdf->grid[y][x]->z);
 				//fdf->grid[y][x]->x += (fdf->window_size.x / 2) - ((fdf->size.x / 2) * fdf->camera.scale.x);
 				//fdf->grid[y][x]->y += (fdf->window_size.y / 2) - ((fdf->size.y / 2) * fdf->camera.scale.x);
 				//printf(" to v->x(%f) v->y(%f) v->z(%f)\n", fdf->grid[y][x]->x, fdf->grid[y][x]->y, fdf->grid[y][x]->z);
